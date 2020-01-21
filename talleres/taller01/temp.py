@@ -44,3 +44,5 @@ class Fecha():
     def get__año(self):
       return self.año
       
+    def cadena__fecha(self, mes, dia, año):
+    	return self.mes+"/"+self.dia+"/"+self.año
