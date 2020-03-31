@@ -1,0 +1,16 @@
+class HashTable():
+
+    def init(self):
+       self.tabla = [0]*10
+       for i in range(len(self.tabla)):
+          self.tabla[i] = []
+
+    # hash_function
+    def funcion_hash(self, k):
+       return int(k[0]) % 10
+
+    def get(self, k):
+       return self.tabla[self.funcion_hash(k)]
+
+    def put(self, k, v):
+       self.tabla [self.funcion_hash(k)] = v
