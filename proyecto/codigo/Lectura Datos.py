@@ -1,5 +1,3 @@
-
-import csv
 ##from pympler.asizeof import asizeof
 ##import time
 
@@ -16,28 +14,26 @@ class Lectura:
     def main(self):
         size = -1
         with open('datos4.csv', encoding='utf-8', mode='r') as file:
-            read_csv_size = csv.reader(file, delimiter=';')
-            for row in read_csv_size:
+            for row in file:
                 if (size == -1):
-                    self.column = (row)
+                    self.column = row.split(';')
                     size += 1
                 else:
                     size += 1
-        file.close()
+            file.close()
         with open('datos4.csv', encoding='utf-8', mode='r') as file:
-            read_csv = csv.reader(file, delimiter=';')
-            self.data=[0]*size
+            self.data = [0] * size
+            self.students = [0] * size
             first_line = True;
             i = 0
-            for row in read_csv:
+            for row in file:
                 if (first_line):
                     first_line = False
                 else:
-                    self.data[i] = row
-                    i = i+1
-        file.close()
-        for row in range(len(self.data)):
-            self.students.append(self.data [row][0])
+                    self.data[i] = row.split(";")
+                    self.students[i] = self.data[i][0]
+                    i = i + 1
+            file.close()
 
     def get_student(self,student_code):
         for i in range(len(self.data)):
