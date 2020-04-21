@@ -1,0 +1,29 @@
+import java.util.*;
+import javafx.util.*;
+
+public class GrafoLista
+{
+    
+    LinkedList<Pair<Integer,Integer>>[] grafo;
+    public GrafoLista(int tamaño){
+        grafo = new LinkedList[tamaño];
+    }
+
+    public void relaciones(int vertice, int vertice2, int peso){
+        grafo[vertice].add(new Pair(vertice2,peso));
+
+    }
+
+    public LinkedList buscarRelacion(int vertice){
+        return grafo[vertice];
+    }
+
+    public int returnPeso(int vertice, int vertice2){
+        for (int i=0; i < grafo[vertice].size(); i++){
+            if(vertice2 == grafo[vertice].get(i).getKey()){
+                return grafo[vertice].get(i).getKey();
+            }
+        }
+        return 0;
+    }
+}
