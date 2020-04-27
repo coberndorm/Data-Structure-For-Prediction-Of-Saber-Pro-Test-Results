@@ -1,0 +1,18 @@
+import java.util.*;
+public class Nodo
+{
+    String autor;
+    String tamaño;
+    String nombre;
+    ArrayList<Nodo> hijos;
+    public Nodo(String autor, String tamaño, String nombre){
+        this.autor = autor;
+        this.tamaño = tamaño;
+        this.nombre = nombre;
+    }
+
+    public ArrayList descendencia(){
+        hijos = new ArrayList<>();
+        return hijos;
+    }
+}
