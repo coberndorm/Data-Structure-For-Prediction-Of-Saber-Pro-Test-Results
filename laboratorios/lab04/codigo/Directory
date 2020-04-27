@@ -1,0 +1,108 @@
+ import java.util.*;
+import java.io.*;
+public class Directorio{
+    public Nodo raiz;
+    
+    public void Nombre(Nodo nodo, String nombre){
+        if(buscarNombre1(raiz, nombre) == true){
+            if(raiz.nombre == nombre){
+                System.out.println(raiz.nombre);
+            }
+            else if(raiz.hijos != null){
+                for(int i=0; i<raiz.hijos.size();i++){
+                    Nombre(raiz.hijos.get(i), nombre);
+                }
+            }
+        }
+        else{
+            System.out.println("The directory or the file does not exist");
+        }
+    }
+    public void Autor(Nodo nodo, String autor){
+        if(buscarAutor1(raiz, autor) == true){
+            if(raiz.autor == autor){
+                System.out.println(raiz.autor);
+            }
+            else if(raiz.hijos != null){
+                for(int i=0; i<raiz.hijos.size();i++){
+                    Autor(raiz.hijos.get(i), autor);
+                }
+            }
+        }
+        else{
+            System.out.println("The directory or the file does not exist");
+        }
+    }
+    public void Tamaño(Nodo nodo, String tamaño){
+        if(buscarTamaño1(raiz, tamaño) == true){
+            if(raiz.tamaño == tamaño){
+                System.out.println(raiz.tamaño);
+            }
+            else if(raiz.hijos != null){
+                for(int i=0; i<raiz.hijos.size();i++){
+                    Tamaño(raiz.hijos.get(i), tamaño);
+                }
+            }
+        }
+        else{
+            System.out.println("The directory or the file does not exist");
+        }
+    }
+    
+    
+    
+    public boolean buscarNombre1(Nodo nodo,String nombre){
+        if(nodo == null || nodo.hijos == null){
+            return false;
+        }
+        if(nodo.nombre == nombre){
+            return true;
+        }
+        for(int i=0; i<nodo.hijos.size(); i++){
+            return buscarNombre1(nodo.hijos.get(i), nombre);
+        }
+        return false;
+    }
+    public boolean buscarTamaño1(Nodo nodo,String tamaño){
+        if(nodo == null || nodo.hijos == null){
+            return false;
+        }
+        if(nodo.tamaño == tamaño){
+            return true;
+        }
+        for(int i=0; i<nodo.hijos.size(); i++){
+            return buscarTamaño1(nodo.hijos.get(i), tamaño);
+        }
+        return false;
+    }
+    public boolean buscarAutor1(Nodo nodo,String autor){
+        if(nodo == null || nodo.hijos == null){
+            return false;
+        }
+        if(nodo.autor == autor){
+            return true;
+        }
+        for(int i=0; i<nodo.hijos.size(); i++){
+            return buscarAutor1(nodo.hijos.get(i), autor);
+        }
+        return false;
+    }
+    
+    
+    
+    public void insertarR(String linea){
+        String datos = linea.substring(linea.indexOf("[")+1);
+        String autor = datos.substring(0, datos.indexOf(" "));
+        String tamaño = datos.substring(datos.indexOf(" "), datos.indexOf("]"));
+        String nombre = datos.substring(datos.lastIndexOf(" "));
+        raiz = new Nodo(autor, tamaño, nombre);
+    }
+    public void insertarN(String linea, Nodo ancestro){
+        String datos = linea.substring(linea.indexOf("[")+1);
+        String autor = datos.substring(0, datos.indexOf(" "));
+        String tamaño = datos.substring(datos.indexOf(" "), datos.indexOf("]"));
+        String nombre = datos.substring(datos.lastIndexOf(" "));
+        Nodo nodo = new Nodo(autor, tamaño, nombre);
+        ancestro.hijos.add(nodo);
+    }
+}
