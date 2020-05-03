@@ -1,0 +1,15 @@
+
+public class Ubicacion
+{
+    public String ID;
+    public float coordenadaX;
+    public float coordenadaY;
+    public String nombre;
+
+    public Ubicacion(String ID, float coordenadaX, float coordenadaY, String nombre){
+        this.ID = ID;
+        this.coordenadaX = coordenadaX;
+        this.coordenadaY = coordenadaY;
+        this.nombre = nombre;
+    }
+}
