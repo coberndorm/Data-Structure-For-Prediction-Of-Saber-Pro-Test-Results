@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.*;
+
+public class LecturaDatos
+{   
+    Ubicacion[] ubicaciones;
+    Map <String, Camino> conexiones;
+    
+    public void leer(){
+        try{
+            BufferedReader read = new BufferedReader(new FileReader("C:/Users/Camilo/Documents/Documents/Eafit/Semestre II/Estructura de Datos y Algoritmos/Laboratorios/Lab 05/Punto 1/medellin_colombia-grande.txt"));
+            int cont1 = 0;
+            int cont2 = 0;
+            
+            read.mark(0);
+            read.readLine();
+            while(!"".equals(read.readLine())){
+                cont1++;
+            }
+            read.readLine();
+            while(read.readLine() != null){
+                cont2++;
+            }
+            conexiones = new HashMap <>(cont2);
+            ubicaciones = new Ubicacion[cont1];
+            read.close();
+            
+            BufferedReader read2 = new BufferedReader(new FileReader("C:/Users/Camilo/Documents/Documents/Eafit/Semestre II/Estructura de Datos y Algoritmos/Laboratorios/Lab 05/Punto 1/medellin_colombia-grande.txt"));
+            
+            String linea =null;
+            int i=0;
+            int n=0;
+            
+            
+            read2.readLine();
+            while(!"".equals((linea = read2.readLine()))){
+               Scanner scan = new Scanner(linea);
+                scan.useDelimiter(" ");
+                String ID = scan.next();
+                float coordenadaX = scan.nextFloat();
+                float coordenadaY = scan.nextFloat();
+                String nombre;
+                if (scan.hasNext())
+                     nombre = scan.next();
+                else 
+                    nombre = null;
+                Ubicacion ubicacion = new Ubicacion(ID, coordenadaX, coordenadaY, nombre);
+                ubicaciones[i] = ubicacion;
+                i++; 
+            }
+            read2.readLine();
+            
+            while((linea = read2.readLine()) != null){
+                Scanner scan = new Scanner(linea);
+                scan.useDelimiter(" ");
+                String ID1 = scan.next();
+                String ID2 = scan.next();
+                float distancia = scan.nextFloat();
+                String nombre;
+                if (scan.hasNext())
+                     nombre = scan.next();
+                else 
+                    nombre = null;
+                Camino camino = new Camino(ID1, ID2, distancia, nombre);
+                conexiones.put(ID1, camino);
+                n++;
+            }
+            read2.close();
+
+           
+        }
+        catch(FileNotFoundException e){
+           
+        }
+        catch(IOException e2){
+            System.out.println("Invalid code");
+        }
+        
+    }
+    
+    
+       public Camino getCaminos (String ID) {
+        
+        return conexiones.get(ID);
+    }
+}
