@@ -1,0 +1,14 @@
+
+public class Camino
+{
+    public String ID1;
+    public String ID2;
+    public float distancia;
+    public String nombre;
+    public Camino(String ID1, String ID2, float distancia, String nombre){
+        this.ID1 = ID1;
+        this.ID2 = ID2;
+        this.distancia = distancia;
+        this.nombre = nombre;
+    }
+}
