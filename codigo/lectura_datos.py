@@ -1,54 +1,46 @@
-##from pympler.asizeof import asizeof
-##import time
+import time
 
-##print(asizeof(self.data)/1024/1024)
-##start = time.time()
-##print(tiem.time()-start)
+
+
+class catchtime(object):
+    def __enter__(self):
+        self.t = time.time()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.t = time.time() - self.t
+        print(self.t)
+
+class Student:
+    def __init__(self, codigo, data):
+        self.codigo = codigo
+        self.data = data
 
 
 class Lectura:
-    data = []
-    column = []
-    students = []
 
     def main(self):
-        size = -1
-        with open('datos4.csv', encoding='utf-8', mode='r') as file:
-            for row in file:
-                if (size == -1):
-                    self.column = row.split(';')
+        with catchtime():
+            size = -1
+
+            with open('datos4.csv', encoding='utf-8', mode='r') as file:
+                for _ in file:
                     size += 1
-                else:
-                    size += 1
-            file.close()
-        with open('datos4.csv', encoding='utf-8', mode='r') as file:
-            self.data = [0] * size
+
             self.students = [0] * size
-            first_line = True;
-            i = 0
-            for row in file:
-                if (first_line):
-                    first_line = False
-                else:
-                    self.data[i] = row.split(";")
-                    self.students[i] = self.data[i][0]
-                    i = i + 1
-            file.close()
+            student_id = [0] * size
 
-    def get_student(self,student_code):
-        for i in range(len(self.data)):
-            if (student_code == self.data[i][0]):
-                print(self.data[i])
+            with open('datos4.csv', encoding='utf-8', mode='r') as file:
 
-    def get_student_data(self, student_code, column_name):
-        column_num = -1
-        for i in range(len(self.column)):
-            if (self.column[i] == column_name):
-                column_num = i
+                next(file)
 
-        for i in range(len(self.data)):
-            if (student_code == self.data[i][0]):
-                print(self.data[i][column_num])
+                for i, row in enumerate(file):
+                    data = row.split(";")
+                    self.students[i] = Student(data[0], data[1:])
+                    student_id[i] = data[0]
 
-    def add_student(self,student):
-        self.data.append(student)
+            self.diccionario = dict(zip(student_id, self.students))
+
+
+if __name__ == '__main__':
+    Lectura().main()
