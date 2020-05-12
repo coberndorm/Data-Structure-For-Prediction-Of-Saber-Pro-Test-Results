@@ -1,7 +1,6 @@
 import time
 
 
-
 class catchtime(object):
     def __enter__(self):
         self.t = time.time()
@@ -11,36 +10,25 @@ class catchtime(object):
         self.t = time.time() - self.t
         print(self.t)
 
+
 class Student:
     def __init__(self, codigo, data):
         self.codigo = codigo
         self.data = data
 
 
-class Lectura:
+def get_all_students():
+    students = {}
 
-    def main(self):
-        with catchtime():
-            size = -1
+    with open('../datos/datos4.csv', encoding='utf-8', mode='r') as file:
+        next(file)
 
-            with open('datos4.csv', encoding='utf-8', mode='r') as file:
-                for _ in file:
-                    size += 1
-
-            self.students = [0] * size
-            student_id = [0] * size
-
-            with open('datos4.csv', encoding='utf-8', mode='r') as file:
-
-                next(file)
-
-                for i, row in enumerate(file):
-                    data = row.split(";")
-                    self.students[i] = Student(data[0], data[1:])
-                    student_id[i] = data[0]
-
-            self.diccionario = dict(zip(student_id, self.students))
+        for i, row in enumerate(file):
+            data = row.split(";")
+            # No es necesario prealocar el espacio para el diccionario porque tiene cercano a O(1) de insercion
+            students[data[0]] = Student(data[0], data[1:])
+    return students
 
 
 if __name__ == '__main__':
-    Lectura().main()
+    print(get_all_students())
