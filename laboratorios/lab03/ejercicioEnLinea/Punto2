@@ -1,0 +1,42 @@
+import java.util.*;
+public class Punto2Lab3{
+    public LinkedList <Character> list = new LinkedList <>();
+    public void Teclado (String text) {
+        int cont = 0;
+        int c = 0;
+        boolean a = false;
+        LinkedList <Character> newList = new LinkedList<>();
+
+        for (int i = 0; i<text.length(); i++){
+            char b = text.charAt(i);
+
+            if (b == ']' && i< text.length()-1){
+                a = false;
+                i++;
+            }
+
+            if (b == '[' && i< text.length () -1){
+                a = true;
+                i++;
+                cont = 0;
+            }
+
+            if (a) {
+                list.add(cont, text.charAt(i));
+                cont ++;
+            } else {
+                list.add(text.charAt(i));
+            }
+        }
+
+        while (list.size()>0){
+            char car = list.remove (c);
+            if (car != '[' && car != ']') {
+                newList.add(car);
+            }
+        }
+        for (char car: newList) {
+            System.out.print (car);
+        }
+    }
+}
