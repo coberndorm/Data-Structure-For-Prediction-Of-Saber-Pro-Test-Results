@@ -1,0 +1,69 @@
+class Node:
+    def __init__(self, current, next=None):  # constructor
+        self.current = current
+        self.next = next
+
+
+class SimpleLinkedList():
+    def __init__(self):
+        self.first_Node = None
+        self.size = 0
+
+    def size(self):
+        return self.size
+
+    def get(self, index):
+        if index < 0 or index >= self.size:
+            raise Exception("Index out of bound exception")
+        else:
+            node = self.first_Node
+            for j in range(index):
+                node = node.next
+                return node.current
+
+    def insert_index(self, element, index):
+        if index == 0 and self.size == 0:
+            self.first_Node = Node(element)
+        elif (self.size == 0 and index > 0) or index > self.size:
+            raise Exception("Index out of bound exception")
+        else:
+            node = self.first_Node
+            i = 0
+            while i < index:
+                node = node.next
+                i += 1
+            node.next = Node(element, node.next.next)
+        self.size += 1
+
+    def insert(self, element):
+        new_node = Node(element)
+        if self.first_Node:
+            node = self.first_Node.next
+            while (node.next):
+                node = nede.next
+            node.next = new_node
+        else:
+            self.first_Node = new_node
+        self.size += 1
+
+    def remove(self, index):
+        if index > self.size or self.size == 0:
+            raise Exception("Index out of bound exception")
+        else:
+            node = self.first_Node
+            i = 0
+            while i < index:
+                node = node.next
+                i += 1
+            node.next = node.next.next
+        self.size -= 1
+
+    def contains(self, element):
+        if (self.size == 0):
+            return False
+        else:
+            node = self.first_Node
+            while (node.next):
+                if (element == node.current):
+                    return True
+            return False
