@@ -1,3 +1,5 @@
+from codigo import gini_impurity
+
 class Student:
     def __init__(self, codigo, data, exito):
         self.codigo = codigo
@@ -14,8 +16,8 @@ def get_all_students():
         for i, row in enumerate(file):
             data = row.split(";")
             # No es necesario prealocar el espacio para el diccionario porque tiene cercano a O(1) de insercion
+            students[data[0]] = Student(data[0], data_sorter(data[1:]), data_corrector_boolean(data[len(data)-1]))
 
-            students[data[0]] = Student(data[0],data_sorter(data[1:]), data[len(data)-1])
     return students
 
 def data_sorter(data):
@@ -209,7 +211,8 @@ def data_sorter(data):
             elif value == 'Entre 3 y menos de 5 SMLV': data[43] = 4
             elif value == 'Entre 5 y menos de 7 SMLV': data[43] = 5
             elif value == 'Entre 7 y menos de 10 SMLV': data[43] = 6
-            elif value == '10 o más SMLV': data[31] = 6
+            elif value == '10 o más SMLV': data[43] = 7
+            else: data[43] = None
         elif i == 44:
             if value == 'No': data[44] = 1
             elif value == 'Si, menos de 20 horas a la semana': data[44] = 2
@@ -332,4 +335,5 @@ def data_corrector_boolean(value):
 if __name__ == '__main__':
     #student = get_all_students()
     #print(student['SB11201220452000'].data)
-    print(data_corrector_boolean(''))
+    students = get_all_students()
+    print(gini_impurity.gini_impurity_ranked(students, students.keys(), 43))
