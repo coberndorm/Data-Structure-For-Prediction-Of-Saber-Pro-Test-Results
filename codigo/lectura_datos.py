@@ -16,9 +16,9 @@ def get_all_students():
         for i, row in enumerate(file):
             data = row.split(";")
             # No es necesario prealocar el espacio para el diccionario porque tiene cercano a O(1) de insercion
-            students[data[0]] = Student(data[0], data_sorter(data[1:]), data_corrector_boolean(data[len(data)-1]))
+            students[data[0]] = Student(data[0], data_sorter(data[1:len(data)-1]), data_corrector_boolean(data[len(data)-1]))
 
-    return students
+    return students, 76
 
 def data_sorter(data):
     for i, value in enumerate(data):
@@ -98,6 +98,7 @@ def data_sorter(data):
             #estu_fechanacimiento.1, revisar
             continue
         elif i == 18:
+            # periodo.1, ranked
             value = int(value)
             if value == 20121: data[18] = 1
             elif value == 20122: data[18] = 2
@@ -105,6 +106,7 @@ def data_sorter(data):
             elif value == 20132: data[18] = 4
             elif value == 20132: data[18] = 5
         elif i == 19:
+            # estu_estudiante.1, cualitative
             continue
         elif i == 20:
             #estu_pais_reside.1, cualitative
@@ -129,11 +131,13 @@ def data_sorter(data):
             if value == 'No paga Pensión': data[26] = 1
             elif value == 'Menos de 87.000': data[26] = 2
             elif value == 'Entre 87.000 y menos de 120.000': data[26] = 3
-            elif value == 'Entre 150.000 y menos de 250.000': data[26] = 4
-            elif value == '250.000 o más': data[26] = 5
+            elif value == 'Entre 120.000 y menos de 150.000':data[26] = 4
+            elif value == 'Entre 150.000 y menos de 250.000': data[26] = 5
+            elif value == '250.000 o más': data[26] = 6
         elif i == 27:
             #fami_educacionpadre.1, ranked
-            if value == 'Primaria incompleta': data[27] = 1
+            if value == 'Ninguno': data[27] = 0
+            elif value == 'Primaria incompleta': data[27] = 1
             elif value == 'Primaria completa': data[27] = 2
             elif value == 'Secundaria (Bachillerato) incompleta': data[27] = 3
             elif value == 'Secundaria (Bachillerato) completa': data[27] = 4
@@ -142,10 +146,11 @@ def data_sorter(data):
             elif value == 'Técnica o tecnológica completa': data[27] = 7
             elif value == 'Educación profesional completa': data[27] = 8
             elif value == 'Postgrado': data[27] = 9
-            elif value == 'No sabe': data[27] = None
+            elif value == 'No sabe': data[27] = ''
         elif i == 28:
             #fami_educacionmadre.1, ranked
-            if value == 'Primaria incompleta': data[28] = 1
+            if value == 'Ninguno': data[28] = 0
+            elif value == 'Primaria incompleta': data[28] = 1
             elif value == 'Primaria completa': data[28] = 2
             elif value == 'Secundaria (Bachillerato) incompleta': data[28] = 3
             elif value == 'Secundaria (Bachillerato) completa': data[28] = 4
@@ -154,7 +159,7 @@ def data_sorter(data):
             elif value == 'Técnica o tecnológica completa': data[28] = 7
             elif value == 'Educación profesional completa': data[28] = 8
             elif value == 'Postgrado': data[28] = 9
-            elif value == 'No sabe': data[28] = None
+            elif value == 'No sabe': data[28] = ''
         elif i == 29:
             #fami_ocupacionpadre.1, cualitative
             continue
@@ -212,7 +217,6 @@ def data_sorter(data):
             elif value == 'Entre 5 y menos de 7 SMLV': data[43] = 5
             elif value == 'Entre 7 y menos de 10 SMLV': data[43] = 6
             elif value == '10 o más SMLV': data[43] = 7
-            else: data[43] = None
         elif i == 44:
             if value == 'No': data[44] = 1
             elif value == 'Si, menos de 20 horas a la semana': data[44] = 2
@@ -317,23 +321,28 @@ def data_sorter(data):
         elif i == 75:
             #desemp_prof, cualatative, no idea?
             pass
-        elif i == 76:
-            #exito, boolean
-            data[76] = data_corrector_boolean(value)
     return data
 
 def data_corrector_boolean(value):
-    if value.upper() == 'NO' or value.upper() =='N' or value.upper() =='0':
+    if value.upper() == 'NO' or value.upper() =='N' or value == '0\n':
         return False
-    elif value.upper() == 'SI' or value.upper() =='S' or value.upper() =='SÍ' or value.upper() =='1':
+    elif value.upper() == 'SI' or value.upper() =='S' or value.upper() =='SÍ' or value == '1\n':
         return True
     else:
-        return None
+        return ''
 
 
 
 if __name__ == '__main__':
     #student = get_all_students()
     #print(student['SB11201220452000'].data)
-    students = get_all_students()
-    print(gini_impurity.gini_impurity_ranked(students, students.keys(), 43))
+    students, columns = get_all_students()
+    cont = 0
+    print( gini_impurity.separacion_datos(students, students.keys(), 75))
+    for i in range(columns):
+        for id in students.keys():
+            if students[id].data[75] == '':
+                cont += 1
+        txt = "{}: {} percentage missing {}"
+        print(txt.format(i, cont,cont/len(students.keys())))
+        cont = 0
