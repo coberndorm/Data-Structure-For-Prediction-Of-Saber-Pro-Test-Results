@@ -9,7 +9,7 @@ class Student:
 
 def get_all_students():
     students = {}
-
+    #creates and fills dictionary of students and their info 
     with open('../datos/datos0.csv', encoding='utf-8', mode='r') as file:
         next(file)
 
@@ -324,6 +324,7 @@ def data_sorter(data):
     return data
 
 def data_corrector_boolean(value):
+    #turns SI into true and NO into false
     if value.upper() == 'NO' or value.upper() =='N' or value == '0\n':
         return False
     elif value.upper() == 'SI' or value.upper() =='S' or value.upper() =='SÍ' or value == '1\n':
