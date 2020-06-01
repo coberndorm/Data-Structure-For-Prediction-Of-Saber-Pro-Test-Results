@@ -1,4 +1,5 @@
 def separacion_datos(students, list_students, column):
+    #checks the type of the variable and checks that theres at least 90% of the answers
     cont = 0
     students_unknown_data = []
 
@@ -29,6 +30,7 @@ def separacion_datos(students, list_students, column):
 
 
 def no_data_fix(left_group, right_group, students_unknown_data):
+    #if there is more than 90% of the data this method puts the missing data in the most common group
     if len(left_group) >= len(right_group):
         left_group.extend(students_unknown_data)
     else:
@@ -36,6 +38,7 @@ def no_data_fix(left_group, right_group, students_unknown_data):
 
 
 def gini_impurity_ranked(students, list_students, column, students_unknown_data):
+    #calculates gini impurity of the variable in that node, the best divider for the rank and the groups that go to the next nodes
     possibles = []
     for id in list_students:
         value = students[id].data[column]
@@ -94,6 +97,7 @@ def gini_impurity_ranked(students, list_students, column, students_unknown_data)
 
 
 def gini_impurity_numeric(students, list_students, column, students_unknown_data):
+    #calculates gini impurity of the variable in that node, the best divider for the numeric data and the groups that go to the next nodes
     possibles = []
     for id in list_students:
         value = students[id].data[column]
@@ -154,6 +158,7 @@ def gini_impurity_numeric(students, list_students, column, students_unknown_data
 
 
 def gini_impurity_boolean(students, list_students, column, students_unknown_data):
+     #calculates gini impurity of the variable in that node and the groups that go to the next nodes and the gini impurity of their population
     students_true = []
     students_true_succesful = []
     students_true_unsuccesful = []
@@ -191,6 +196,7 @@ def gini_impurity_boolean(students, list_students, column, students_unknown_data
 
 
 def gini_impurity_cualitative(students, list_students, column, students_unknown_data):
+    #calculates gini impurity of the variable in that node, the best string to compare the students and the groups that go to the next nodes
     possibles = []
     for id in list_students:
         value = students[id].data[column]
