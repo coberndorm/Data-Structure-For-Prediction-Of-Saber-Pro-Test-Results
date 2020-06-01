@@ -10,7 +10,7 @@ class Student:
 def get_all_students():
     students = {}
 
-    with open('../datos/datos1.csv', encoding='utf-8', mode='r') as file:
+    with open('../datos/datos0.csv', encoding='utf-8', mode='r') as file:
         next(file)
 
         for i, row in enumerate(file):
@@ -330,19 +330,3 @@ def data_corrector_boolean(value):
         return True
     else:
         return ''
-
-
-
-if __name__ == '__main__':
-    #student = get_all_students()
-    #print(student['SB11201220452000'].data)
-    students, columns = get_all_students()
-    cont = 0
-    print( gini_impurity.separacion_datos(students, students.keys(), 75))
-    for i in range(columns):
-        for id in students.keys():
-            if students[id].data[75] == '':
-                cont += 1
-        txt = "{}: {} percentage missing {}"
-        print(txt.format(i, cont,cont/len(students.keys())))
-        cont = 0

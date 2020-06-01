@@ -1,6 +1,5 @@
 import time
 
-
 class catchtime(object):
     def __enter__(self):
         self.t = time.time()

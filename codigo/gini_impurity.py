@@ -14,12 +14,15 @@ def separacion_datos(students, list_students, column):
         if isinstance(students[id].data[column], bool):
             # used for boolean data
             return gini_impurity_boolean(students, list_students, column, students_unknown_data)
+
         elif isinstance(students[id].data[column], float):
             # used for numeric data
             return gini_impurity_numeric(students, list_students, column, students_unknown_data)
+
         elif isinstance(students[id].data[column], int):
             # used for ranked data
             return gini_impurity_ranked(students, list_students, column, students_unknown_data)
+
         elif isinstance(students[id].data[column], str):
             # used for cualitative
             return gini_impurity_cualitative(students, list_students, column, students_unknown_data)
@@ -55,6 +58,7 @@ def gini_impurity_ranked(students, list_students, column, students_unknown_data)
         students_over_rank = []
         students_over_rank_successful = []
         students_over_rank_unsuccessful = []
+
         for id in list_students:
             if students[id].data[column] != "" and students[id].data[column] >= rank:
                 students_over_rank.append(id)
@@ -68,7 +72,9 @@ def gini_impurity_ranked(students, list_students, column, students_unknown_data)
                     students_under_rank_successful.append(id)
                 else:
                     students_under_rank_unsuccessful.append(id)
+
         no_data_fix(students_under_rank, students_over_rank, students_unknown_data)
+
         gini_over_rank = 1 - (len(students_over_rank_successful) / len(students_over_rank)) ** 2 - (
                 len(students_over_rank_unsuccessful) / len(students_over_rank)) ** 2
         gini_under_rank = 1 - (len(students_under_rank_successful) / len(students_under_rank)) ** 2 - (
@@ -143,6 +149,7 @@ def gini_impurity_numeric(students, list_students, column, students_unknown_data
             best_average = average
             best_students_over_average = students_over_average
             best_students_under_average = students_under_average
+
     return best_gini, best_gini_under_splitter, best_gini_over_splitter, best_average, best_students_under_average, best_students_over_average
 
 
@@ -179,6 +186,7 @@ def gini_impurity_boolean(students, list_students, column, students_unknown_data
             len(students_false_unsuccesful) / len(students_false))**2
     gini = (len(students_true) / len(list_students)) * gini_true + (
             len(students_false) / len(list_students))*gini_false
+
     return gini, True, gini_false, gini_true, students_false, students_true
 
 
@@ -222,6 +230,7 @@ def gini_impurity_cualitative(students, list_students, column, students_unknown_
                     students_with_divider_successful.append(id)
                 else:
                     students_with_divider_unsuccessful.append(id)
+
         no_data_fix(students_with_divider, students_without_divider, students_unknown_data)
         gini_with_divider = 1 - (len(students_without_divider_successful) / len(students_without_divider)) ** 2 - (
                 len(students_without_divider_unsuccessful) / len(students_without_divider)) ** 2
