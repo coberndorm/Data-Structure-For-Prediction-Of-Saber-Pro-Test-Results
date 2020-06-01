@@ -249,3 +249,15 @@ def gini_impurity_cualitative(students, list_students, column, students_unknown_
 
     return best_gini, best_gini_without_divider, best_gini_with_divider, best_divider, best_students_without_divider, best_students_with_divider
 
+def probability(students, list_students):
+    cont_succesful = 0
+    for id in list_students:
+        if students[id].exito:
+            cont_succesful += 1
+
+    if cont_succesful/len(list_students) >= 0.5:
+        return True
+    else:
+        return False
+
+

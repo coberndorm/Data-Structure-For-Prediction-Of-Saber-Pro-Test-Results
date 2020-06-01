@@ -7,10 +7,10 @@ class Student:
         self.exito = exito
 
 
-def get_all_students():
+def get_all_students(data_location):
     students = {}
 
-    with open('../datos/datos0.csv', encoding='utf-8', mode='r') as file:
+    with open(data_location, encoding='utf-8', mode='r') as file:
         next(file)
 
         for i, row in enumerate(file):

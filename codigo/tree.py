@@ -10,10 +10,12 @@ class Node:
         self.gini = gini
         self.gini_right = gini_right
         self.gini_left = gini_left
+        self.leaf_node = False
+        self.probability = None
         
 
 def tree():
-    students, column_size = lectura_datos.get_all_students()
+    students, column_size = lectura_datos.get_all_students('../datos/datos_train0.csv')
     checked_columns = [False]*column_size
     height = 0
 
@@ -32,28 +34,27 @@ def tree():
     return root
 
 
-def tree_maker(father_node, checked_columns, height, students, list_students_left, list_students_right):
-    if height <= 5:
-        father_node.left, list_students_left_leaf_left, list_students_left_leaf_right, checked_columns_left = \
-            node_calculator(len(checked_columns), checked_columns, students, list_students_left)
+def tree_maker(node, checked_columns, height, students, list_students_left, list_students_right):
 
-        if father_node.gini_left <= father_node.left.gini:
-            father_node.left = None
-        else:
-            tree_maker(father_node.left, checked_columns_left, height + 1, students,
-                       list_students_left_leaf_left, list_students_left_leaf_right)
+    node.left, list_students_left_leaf_left, list_students_left_leaf_right, checked_columns_left = \
+        node_calculator(len(checked_columns), checked_columns, students, list_students_left)
 
-        father_node.right, list_students_right_leaf_left, list_students_right_leaf_right, checked_columns_right = \
-            node_calculator(len(checked_columns), checked_columns, students, list_students_right)
-
-        if father_node.gini_right <= father_node.right.gini:
-            father_node.right = None
-        else:
-            tree_maker(father_node.right, checked_columns_right, height + 1, students,
-                   list_students_right_leaf_left, list_students_right_leaf_right)
+    if node.gini_left <= node.left.gini or height <= 4:
+        node.left.leaf_node = True
+        node.left.probability = gini_impurity.probability(students, list_students_left)
     else:
-        father_node.left = None
-        father_node.right = None
+        tree_maker(node.left, checked_columns_left, height + 1, students,
+                   list_students_left_leaf_left, list_students_left_leaf_right)
+
+    node.right, list_students_right_leaf_left, list_students_right_leaf_right, checked_columns_right = \
+        node_calculator(len(checked_columns), checked_columns, students, list_students_right)
+
+    if node.gini_right <= node.right.gini or height <= 4:
+        node.right.leaf_node = True
+        node.right.probability = gini_impurity.probability(students, list_students_right)
+    else:
+        tree_maker(node.right, checked_columns_right, height + 1, students,
+                   list_students_right_leaf_left, list_students_right_leaf_right)
 
 
 def node_calculator(column_size, columns_visited, students, list_students):
@@ -84,3 +85,29 @@ def node_calculator(column_size, columns_visited, students, list_students):
     node = Node(divider, col, list_students, best_gini, best_gini_left, best_gini_right)
     return node, best_students_left, best_students_right, checked_columns
 
+def test(id, root, students):
+    node = root
+    data = students[id].data
+    while True:
+        if data[node.column] >= node.divider:
+            if not node.right.leaf_node:
+                node = node.right
+            else:
+                return node.right.probability
+        else:
+            if not node.left.leaf_node:
+                node = node.left
+            else:
+                return node.left.probability
+
+def tester():
+    test_students, column_size = lectura_datos.get_all_students('../datos/datos_test0.csv')
+    root = tree()
+    prediction = 0
+    for id in test_students.keys():
+        if test(id,root, test_students) == test_students[id].exito:
+            prediction += 1
+    return prediction/len(test_students.keys())
+
+if __name__ == '__main__':
+    print (tester())
