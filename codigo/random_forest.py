@@ -19,8 +19,8 @@ def trees(students, column_size, checked_columns):
 
     return root
 
-def random_forest():
-    students, column_size = lectura_datos.get_all_students('../datos/datos_train0.csv')
+def random_forest(datos_train):
+    students, column_size = lectura_datos.get_all_students()
     checked_columns = [False] * column_size
     tree_array = []
     tree_array.append(trees(students, column_size, checked_columns))
@@ -44,15 +44,15 @@ def random_censorship(node, checked_columns):
     return checked_columns
 
 
-def tester():
-    test_students, column_size = lectura_datos.get_all_students('../datos/datos_test0.csv')
-    tree_array = random_forest()
+def runClassify_forest(datos_train, datos_test):
+    test_students, column_size = lectura_datos.get_all_students(datos_test)
+    tree_array = random_forest(datos_train)
     prediction_percentage = 0
 
     for id in test_students.keys():
         tree_prediction = 0
         for root in tree_array:
-            if tree.test(id, root, test_students):
+            if tree.classify(id, root, test_students):
                 tree_prediction += 1
         if tree_prediction / len(tree_array) >= 0.5:
             prediction = True
@@ -65,4 +65,4 @@ def tester():
     return  prediction_percentage / len(test_students.keys())
 
 if __name__ == '__main__':
-    print(tester())
+    print(runClassify_forest('../datos/datos_train0.csv', '../datos/datos_test0.csv'))
