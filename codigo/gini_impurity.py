@@ -158,7 +158,7 @@ def gini_impurity_numeric(students, list_students, column, students_unknown_data
 
 
 def gini_impurity_boolean(students, list_students, column, students_unknown_data):
-     #calculates gini impurity of the variable in that node and the groups that go to the next nodes and the gini impurity of their population
+    #calculates gini impurity of the variable in that node and the groups that go to the next nodes and the gini impurity of their population
     students_true = []
     students_true_succesful = []
     students_true_unsuccesful = []

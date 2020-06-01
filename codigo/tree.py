@@ -15,12 +15,12 @@ class Node:
         
 
 def tree():
-    students, column_size = lectura_datos.get_all_students('../datos/datos_train0.csv')
+    students, column_size, list_students = lectura_datos.get_all_students('../datos/datos_train0.csv')
     checked_columns = [False]*column_size
     height = 0
 
     root, list_students_left_root, list_students_right_root, checked_columns = \
-        node_calculator(column_size, checked_columns, students, students.keys())
+        node_calculator(column_size, checked_columns, students, list_students)
     root.left, list_students_left_leaf_left, list_students_left_leaf_right, checked_columns_left = \
         node_calculator(column_size, checked_columns, students, list_students_left_root)
     root.right, list_students_right_leaf_left, list_students_right_leaf_right, checked_columns_right = \
@@ -39,7 +39,7 @@ def tree_maker(node, checked_columns, height, students, list_students_left, list
     node.left, list_students_left_leaf_left, list_students_left_leaf_right, checked_columns_left = \
         node_calculator(len(checked_columns), checked_columns, students, list_students_left)
 
-    if node.gini_left <= node.left.gini or height <= 4:
+    if node.gini_left <= node.left.gini or height >= 4:
         node.left.leaf_node = True
         node.left.probability = gini_impurity.probability(students, list_students_left)
     else:
@@ -49,7 +49,7 @@ def tree_maker(node, checked_columns, height, students, list_students_left, list
     node.right, list_students_right_leaf_left, list_students_right_leaf_right, checked_columns_right = \
         node_calculator(len(checked_columns), checked_columns, students, list_students_right)
 
-    if node.gini_right <= node.right.gini or height <= 4:
+    if node.gini_right <= node.right.gini or height >= 4:
         node.right.leaf_node = True
         node.right.probability = gini_impurity.probability(students, list_students_right)
     else:
@@ -89,23 +89,47 @@ def test(id, root, students):
     node = root
     data = students[id].data
     while True:
-        if data[node.column] >= node.divider:
-            if not node.right.leaf_node:
-                node = node.right
+        try:
+            if data[node.column] >= node.divider:
+                if not node.right.leaf_node:
+                    node = node.right
+                else:
+                    return node.right.probability
             else:
-                return node.right.probability
-        else:
-            if not node.left.leaf_node:
-                node = node.left
-            else:
-                return node.left.probability
+                if not node.left.leaf_node:
+                    node = node.left
+                else:
+                    return node.left.probability
+        except:
+            try:
+                if data[node.column] == node.divider:
+                    if not node.right.leaf_node:
+                        node = node.right
+                    else:
+                        return node.right.probability
+                else:
+                    if not node.left.leaf_node:
+                        node = node.left
+                    else:
+                        return node.left.probability
+            except:
+                if data[node.column]:
+                    if not node.right.leaf_node:
+                        node = node.right
+                    else:
+                        return node.right.probability
+                else:
+                    if not node.left.leaf_node:
+                        node = node.left
+                    else:
+                        return node.left.probability
 
 def tester():
-    test_students, column_size = lectura_datos.get_all_students('../datos/datos_test0.csv')
+    test_students, column_size, list_students = lectura_datos.get_all_students('../datos/datos_test0.csv')
     root = tree()
     prediction = 0
-    for id in test_students.keys():
-        if test(id,root, test_students) == test_students[id].exito:
+    for id in list_students:
+        if test(id, root, test_students) == test_students[id].exito:
             prediction += 1
     return prediction/len(test_students.keys())
 

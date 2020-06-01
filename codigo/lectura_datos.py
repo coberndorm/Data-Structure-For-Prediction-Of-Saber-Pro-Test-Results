@@ -9,6 +9,7 @@ class Student:
 
 def get_all_students(data_location):
     students = {}
+    list_students = []
     #creates and fills dictionary of students and their info
     with open(data_location, encoding='utf-8', mode='r') as file:
         next(file)
@@ -16,9 +17,10 @@ def get_all_students(data_location):
         for i, row in enumerate(file):
             data = row.split(";")
             # No es necesario prealocar el espacio para el diccionario porque tiene cercano a O(1) de insercion
+            list_students.append(data[0])
             students[data[0]] = Student(data[0], data_sorter(data[1:len(data)-1]), data_corrector_boolean(data[len(data)-1]))
 
-    return students, 76
+    return students, 76, list_students
 
 def data_sorter(data):
     for i, value in enumerate(data):
