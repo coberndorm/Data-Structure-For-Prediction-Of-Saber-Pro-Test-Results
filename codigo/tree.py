@@ -124,7 +124,7 @@ def classify(id, root, students):
                     else:
                         return node.left.probability
 
-def tester(datos_train, datos_test):
+def runClassify(datos_train, datos_test):
     test_students, column_size, list_students = lectura_datos.get_all_students(datos_test)
     root = tree(datos_train)
     prediction = 0
@@ -134,4 +134,4 @@ def tester(datos_train, datos_test):
     return prediction/len(test_students.keys())
 
 if __name__ == '__main__':
-    print (tester('../datos/datos_train0.csv','../datos/datos_test0.csv'))
+    print (runClassify('../datos/datos_train0.csv', '../datos/datos_test0.csv'))
